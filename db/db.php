@@ -60,12 +60,12 @@
                         }
 
                         //These variables compile all required conditions for the WHERE statement and their respective data types in preparation for creating and binding a prepared statement.
-                        $cond .= $column . " " .$operator . " ? AND";
+                        $cond .= $column . " " .$operator . " ? AND ";
                         $types .= substr(gettype($value), 0, 1);
                     }
 
                     //substr() function to remove the last extra " AND".
-                    $cond = substr ($cond, 0, -4);
+                    $cond = substr ($cond, 0, -5);
                     $stmt = $this->conn->prepare("SELECT $row FROM $table WHERE $cond");
                     $stmt -> bind_param($types, ...array_values($where));
 

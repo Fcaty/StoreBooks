@@ -1,11 +1,6 @@
 <?php
-
     require "db/db.php";
     $database = new Database;
-
-    $database->select('books', '*');
-    $book_data = $database->res;
-
 ?>
 
 <!DOCTYPE html>
@@ -61,7 +56,19 @@
 
         <section id = "user-information">
             <h2>User Information</h2>
-
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Username</th>
+                            <th>User Role</th>
+                            <th>User Email</th>
+                        </tr>
+                    </thead>
+                    <tbody id = "tBodyUsers">
+                        
+                    </tbody>
+                </table>
         </section>
     </main>
 </body>

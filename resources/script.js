@@ -2,6 +2,7 @@ $(document).ready(function() {
     //Function call for book info loading
     loadBookData();
     loadBookGenres();
+    loadUserData();
 
     //Event listener for submit button event listener
     $('#addBookForm').on('submit', function(e) {
@@ -31,7 +32,7 @@ $(document).ready(function() {
 
     //Event Listener for Search
     $('#search-bar').on('keyup', function() {
-        loadBookData(keyword);
+        loadBookData();
     });
 
     $('#genre-select').on('change', function(){
@@ -92,6 +93,32 @@ function loadBookGenres(){
         },
         error: function(err){
             alert("Error occured while fetching genre data.");
+        }
+    });
+}
+
+function loadUserData(){
+    $.ajax({
+        url: 'db/request.php',
+        method: 'POST',
+        data: {fetch_users: true},
+        success: function(result){
+            var tBody = ``;
+            var cnt = 1;
+            var datas = JSON.parse(result);
+
+            datas.forEach(function(data){
+                tBody += `<tr>`;
+                    tBody += `<td>${cnt++}</td>`
+                    tBody += `<td>${data.user_name}</td>`
+                    tBody += `<td>${data.user_role}</td>`
+                    tBody += `<td>${data.user_email}</td>`
+                tBody += `</tr>`;
+            });
+            $('#tBodyUsers').html(tBody);
+        },
+        error: function(err){
+            alert("Error occured while fetching user data.");
         }
     });
 }
