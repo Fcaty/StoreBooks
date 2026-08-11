@@ -33,7 +33,16 @@
             <input type = "number" name = "book_stock" id = "stock" placeholder = "Current Stock">
             <button type = "submit" name = "add_book">Submit</button>
         </form>
+
+        <h2>Filter Books</h2>
+        <div id="filterControls">
+            <input type = "text" id = "filterInput" placeholder = "Filter by Genre or Author...">
+            <button type = "button" id = "filterButton">Filter</button>
+            <button type = "button" id = "clearFilterButton">Clear</button>
+        </div>
+
         <h2>Book Information</h2>
+
         <table>
             <thead>
                 <tr>
