@@ -30,6 +30,7 @@
             <input type = "number" name = "book_price" id = "price" placeholder = "Book Price">
             <input type = "text" name = "book_genre" id = "genre" placeholder = "Book Genre">
             <input type = "text" name = "book_author" id = "author" placeholder = "Book Author">
+            <input type = "number" name = "book_stock" id = "stock" placeholder = "Current Stock">
             <button type = "submit" name = "add_book">Submit</button>
         </form>
         <h2>Book Information</h2>
@@ -41,6 +42,8 @@
                     <th>Price</th>
                     <th>Genre</th>
                     <th>Author</th>
+                    <th>Stock</th>
+                    <th>Amount Sold</th>
                 </tr>
             </thead>
             <tbody id = "tBodyBooks">
@@ -72,6 +75,8 @@
                         tBody += `<td> ${data.book_price}</td>`
                         tBody += `<td> ${data.book_genre}</td>`
                         tBody += `<td> ${data.book_author}</td>`
+                        tBody += `<td> ${data.book_stock}</td>`
+                        tBody += `<td> ${data.book_sold}</td>`
                     tBody += `</tr>`
                 });
                 $('#tBodyBooks').html(tBody);
