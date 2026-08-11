@@ -40,16 +40,32 @@
             }
         }
 
+        //Select function serves as a flexible way of reusing a single function for ALL system queries
+        //Search, ReturnAll, etc.
         public function select ($table, $row = "*", $where = NULL) {
             try {
                 if (!is_null($where)) {
                     $cond=$types="";
+                    
+                    //This foreach loop will loop through all key-value pairs of the $whereData assoc array, properly formatting them into a condition statement and acquiring its data type to create a preparedStatement.
                     foreach($where as $key => $value) {
-                        $cond .= $key . " = ? AND";
+
+                        //By default, WHERE's operator is "=".
+                        $operator = "=";
+                        $column = $key;
+
+                        //In cases where part of a WHERE statement includes special operators such as >, <, or most importantly, LIKE (for search), these lines of code will separate them.
+                        if (strpos($key, ' ') !== false){
+                            list($column, $operator) = explode(' ', $key, 2);
+                        }
+
+                        //These variables compile all required conditions for the WHERE statement and their respective data types in preparation for creating and binding a prepared statement.
+                        $cond .= $column . " " .$operator . " ? AND ";
                         $types .= substr(gettype($value), 0, 1);
                     }
 
-                    $cond = substr ($cond, 0, -4);
+                    //substr() function to remove the last extra " AND".
+                    $cond = substr ($cond, 0, -5);
                     $stmt = $this->conn->prepare("SELECT $row FROM $table WHERE $cond");
                     $stmt -> bind_param($types, ...array_values($where));
 

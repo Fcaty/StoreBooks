@@ -31,8 +31,12 @@ function loadBookData() {
 }
 
 $(document).ready(function() {
+    //Function call for book info loading
     loadBookData();
+    loadBookGenres();
+    loadUserData();
 
+    //Event listener for submit button event listener
     $('#addBookForm').on('submit', function(e) {
     e.preventDefault();
     var datas = $(this).serializeArray();
@@ -56,6 +60,15 @@ $(document).ready(function() {
                 alert("Error occurred while adding product data");
             }
         });
+    });
+
+    //Event Listener for Search
+    $('#search-bar').on('keyup', function() {
+        loadBookData();
+    });
+
+    $('#genre-select').on('change', function(){
+        loadBookData();
     });
 });
 
@@ -84,3 +97,85 @@ $('#clearFilterButton').on('click', function() {
 
 
 
+//Function code for loading book data
+function loadBookData() {
+
+        let searchText = $('#search-bar').val();
+        let selectedGenre = $('#genre-select').val();
+
+        $.ajax({
+            url: 'db/request.php',
+            method: 'POST',
+            data: { 'fetch_books': true,
+                    'search_query': searchText,
+                    'genre': selectedGenre
+            },
+            success: function(result) {
+                var tBody = ``;
+                var cnt = 1;
+                var datas = JSON.parse(result);
+
+                datas.forEach(function(data){
+                    tBody += `<tr>`;
+                        tBody += `<td> ${cnt++}</td>`
+                        tBody += `<td> ${data.book_name}</td>`
+                        tBody += `<td> ${data.book_price}</td>`
+                        tBody += `<td> ${data.book_genre}</td>`
+                        tBody += `<td> ${data.book_author}</td>`
+                        tBody += `<td> ${data.book_stock}</td>`
+                        tBody += `<td> ${data.book_sold}</td>`
+                    tBody += `</tr>`
+                });
+                $('#tBodyBooks').html(tBody);
+            },
+            error: function(err){
+                alert("Error occured while fetching product data.")
+            }
+        });
+    }
+
+function loadBookGenres(){
+    $.ajax({
+        url: 'db/request.php',
+        method: 'POST',
+        data: { 'fetch_genres': true },
+        success: function(result){
+            var selectOptions = `<option value = ""> All </option>`;
+            var datas = JSON.parse(result);
+
+            datas.forEach(function(data){
+                selectOptions += `<option value = "${data.book_genre}"> ${data.book_genre}</option>`
+            });
+            $('#genre-select').html(selectOptions);
+        },
+        error: function(err){
+            alert("Error occured while fetching genre data.");
+        }
+    });
+}
+
+function loadUserData(){
+    $.ajax({
+        url: 'db/request.php',
+        method: 'POST',
+        data: {fetch_users: true},
+        success: function(result){
+            var tBody = ``;
+            var cnt = 1;
+            var datas = JSON.parse(result);
+
+            datas.forEach(function(data){
+                tBody += `<tr>`;
+                    tBody += `<td>${cnt++}</td>`
+                    tBody += `<td>${data.user_name}</td>`
+                    tBody += `<td>${data.user_role}</td>`
+                    tBody += `<td>${data.user_email}</td>`
+                tBody += `</tr>`;
+            });
+            $('#tBodyUsers').html(tBody);
+        },
+        error: function(err){
+            alert("Error occured while fetching user data.");
+        }
+    });
+}
