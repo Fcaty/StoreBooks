@@ -46,6 +46,7 @@
                         <th>Author</th>
                         <th>Stock</th>
                         <th>Amount Sold</th>
+                        <th colspan = 2>Actions</th>
                     </tr>
                 </thead>
                 <tbody id = "tBodyBooks">
@@ -63,6 +64,7 @@
                             <th>Username</th>
                             <th>User Role</th>
                             <th>User Email</th>
+                            <th colspan = 2>Actions</th>
                         </tr>
                     </thead>
                     <tbody id = "tBodyUsers">
