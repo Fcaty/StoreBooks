@@ -1,3 +1,35 @@
+function renderBooks(result) {
+    var tBody = ``;
+    var cnt = 1;
+    var datas = JSON.parse(result);
+    datas.forEach(function(data){
+        tBody += `<tr>`;
+        tBody += `<td> ${cnt++}</td>`
+        tBody += `<td> ${data.book_name}</td>`
+        tBody += `<td> ${data.book_price}</td>`
+        tBody += `<td> ${data.book_genre}</td>`
+        tBody += `<td> ${data.book_author}</td>`
+        tBody += `<td> ${data.book_stock}</td>`
+        tBody += `<td> ${data.book_sold}</td>`
+        tBody += `</tr>`
+    });
+    $('#tBodyBooks').html(tBody);
+}
+
+function loadBookData() {
+    $.ajax({
+        url: 'db/request.php',
+        method: 'POST',
+        data: { 'fetch_books': true },
+        success: function(result) {
+            renderBooks(result);
+        },
+        error: function(err) {
+            alert("Error occurred while fetching book data.");
+        }
+    });
+}
+
 $(document).ready(function() {
     //Function call for book info loading
     loadBookData();
@@ -39,6 +71,31 @@ $(document).ready(function() {
         loadBookData();
     });
 });
+
+$('#filterButton').on('click', function() {
+    $.ajax({
+        url: 'db/request.php',
+        method: 'POST',
+        data: { 
+            'filter_books': true,
+            'genre': $('#filterGenre').val(),
+            'author': $('#filterAuthor').val()},
+        success: function(result) {
+            renderBooks(result);
+        },
+        error: function(err) {
+            alert("Error occurred while filtering books.");
+        }
+    });
+});
+
+$('#clearFilterButton').on('click', function() {
+    $('#filterGenre').val('');
+    $('#filterAuthor').val('');
+    loadBookData();
+});
+
+
 
 //Function code for loading book data
 function loadBookData() {
