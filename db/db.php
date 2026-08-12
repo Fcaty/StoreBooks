@@ -9,7 +9,7 @@
 
         public function __construct(){
             try {
-                $this->conn = new mysqli($this->servername, $this->username, $this->password, $this->dbname, 3307);
+                $this->conn = new mysqli($this->servername, $this->username, $this->password, $this->dbname);
             } catch (Exception $e) {
                 die("Database connection error! <br>" . $e);
             }
@@ -80,34 +80,6 @@
                 die("Error requesting data! <br>" . $e);
             }
         }
-
-        public function selectLike($table, $row = "*", $where = NULL) {
-        try {
-             if (!is_null($where)) {
-                 $cond = "";
-                 $values = [];
-                 foreach($where as $key => $value) {
-                      $cond .= $key . " LIKE ? AND";
-                      $values[] = "%" . $value . "%";
-                    }
-                    $cond = substr($cond, 0, -4);
-
-                    $stmt = $this->conn->prepare("SELECT $row FROM $table WHERE $cond");
-                    $types = str_repeat('s', count($values));
-                    $stmt->bind_param($types, ...$values);
-
-                } else {
-                    $stmt = $this->conn->prepare("SELECT $row FROM $table");
-                    }
-
-                $stmt->execute();
-                $this->res = $stmt->get_result();
-
-            } catch (Exception $e){
-                die("Error requesting data! <br>" . $e);
-            }
-        }
-
     }
 
 ?>

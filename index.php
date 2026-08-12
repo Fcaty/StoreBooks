@@ -19,38 +19,6 @@
     </header>
 
     <main>
-        <h2>Add New Book Information</h2>
-        <form id = "addBookForm" method = "POST" action = "db/request.php">
-            <input type = "text" name = "book_name" id = "name" placeholder = "Book Name">
-            <input type = "number" name = "book_price" id = "price" placeholder = "Book Price">
-            <input type = "text" name = "book_genre" id = "genre" placeholder = "Book Genre">
-            <input type = "text" name = "book_author" id = "author" placeholder = "Book Author">
-            <input type = "number" name = "book_stock" id = "stock" placeholder = "Current Stock">
-            <button type = "submit" name = "add_book">Submit</button>
-        </form>
-
-        <h2>Filter Books</h2>
-        <div id="filterControls">
-            <input type = "text" id = "filterInput" placeholder = "Filter by Genre or Author...">
-            <button type = "button" id = "filterButton">Filter</button>
-            <button type = "button" id = "clearFilterButton">Clear</button>
-        </div>
-
-        <h2>Book Information</h2>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Book ID</th>
-                    <th>Book Name</th>
-                    <th>Price</th>
-                    <th>Genre</th>
-                    <th>Author</th>
-                    <th>Stock</th>
-                    <th>Amount Sold</th>
-                </tr>
-            </thead>
-            <tbody id = "tBodyBooks">
         <section id = "general-book-info">
             <h2>Add New Book Information</h2>
             <form id = "addBookForm" method = "POST" action = "db/request.php">
@@ -78,6 +46,7 @@
                         <th>Author</th>
                         <th>Stock</th>
                         <th>Amount Sold</th>
+                        <th colspan = 2>Actions</th>
                     </tr>
                 </thead>
                 <tbody id = "tBodyBooks">
@@ -95,6 +64,7 @@
                             <th>Username</th>
                             <th>User Role</th>
                             <th>User Email</th>
+                            <th colspan = 2>Actions</th>
                         </tr>
                     </thead>
                     <tbody id = "tBodyUsers">
