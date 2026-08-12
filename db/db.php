@@ -9,7 +9,7 @@
 
         public function __construct(){
             try {
-                $this->conn = new mysqli($this->servername, $this->username, $this->password, $this->dbname);
+                $this->conn = new mysqli($this->servername, $this->username, $this->password, $this->dbname, 3307);
             } catch (Exception $e) {
                 die("Database connection error! <br>" . $e);
             }
