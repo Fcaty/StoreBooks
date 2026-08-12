@@ -9,6 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type = "text/javascript" src= "resources/jquery.min.js"></script>
+    <link rel = "stylesheet" href = "resources/styles.css">
     <title>Starbooks</title>
 </head>
 <body>
@@ -73,6 +74,35 @@
                 </table>
         </section>
     </main>
+
+    <div id = "editPanel" class = "panel-overlay">
+        <div class = "panel-content">
+            <h2>Edit Information</h2>
+            <form id = "editBookForm" method = "POST" action = "db/request.php">
+                <input type = "hidden" name = "edit_book_id" id = "edit_book_id">
+
+                <label for = "edit_book_name">Book Name:</label>
+                <input type = "text" name = "edit_book_name" id = "edit_book_name" placeholder = "Book Name" required>
+
+                <label for = "edit_book_price">Book Price:</label>
+                <input type = "number" name = "edit_book_price" id = "edit_book_price" placeholder = "Book Price" required>
+
+                <label for = "edit_book_genre">Book Genre:</label>
+                <input type = "text" name = "edit_book_genre" id = "edit_book_genre" placeholder = "Book Genre" required>
+
+                <label for = "edit_book_author">Book Author:</label>
+                <input type = "text" name = "edit_book_author" id = "edit_book_author" placeholder = "Book Author" required>
+
+                <label for = "edit_book_stock">Book Stock:</label>
+                <input type = "number" name = "edit_book_stock" id = "edit_book_stock" placeholder = "Current Stock" required>
+
+                <label for = "edit_book_sold">Books Sold:</label>
+                <input type = "number" name = "edit_book_sold" id = "edit_book_sold" placeholder = "Current Stock" required>
+                
+                <button type = "submit" name = "edit_book">Save Changes</button>
+                <button type = "button" id = "closePanelBtn">Cancel</button>
+        </div>
+    </div>
 </body>
 <script type = "text/javascript" src = resources/script.js> </script>
 </html>

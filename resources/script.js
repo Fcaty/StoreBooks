@@ -38,6 +38,36 @@ $(document).ready(function() {
     $('#genre-select').on('change', function(){
         loadBookData();
     });
+
+    $(document).on('click', '.edit-btn', function(){
+        let id = $(this).data('id');
+        let name = $(this).data('name');
+        let price = $(this).data('price');
+        let genre = $(this).data('genre');
+        let author = $(this).data('author');
+        let stock = $(this).data('stock');
+        let sold = $(this).data('sold');
+
+        $('#edit_book_id').val(id);
+        $('#edit_book_name').val(name);
+        $('#edit_book_price').val(price);
+        $('#edit_book_genre').val(genre);
+        $('#edit_book_author').val(author);
+        $('#edit_book_stock').val(stock);
+        $('#edit_book_sold').val(sold);
+
+        $('#editPanel').fadeIn();
+    });
+
+    $('#closePanelBtn').on('click', function(){
+        $('#editPanel').fadeOut();
+    });
+
+    $('.panel-overlay').on('click', function(e) {
+        if(e.target === this){
+            $(this).fadeOut();
+        }
+    })
 });
 
 //Function code for loading book data
@@ -66,7 +96,17 @@ function loadBookData() {
                         tBody += `<td> ${data.book_author}</td>`
                         tBody += `<td> ${data.book_stock}</td>`
                         tBody += `<td> ${data.book_sold}</td>`
-                        tBody += `<td> <button>Edit</button> </td>`
+                        tBody += `<td> <button class = "edit-btn"
+                                               data-id= "${data.book_id}"
+                                               data-name= "${data.book_name}"
+                                               data-price= "${data.book_price}"
+                                               data-genre= "${data.book_genre}"
+                                               data-author="${data.book_author}"
+                                               data-stock= "${data.book_stock}"
+                                               data-sold= "${data.book_sold}">
+                                               Edit
+                                               </button> 
+                                  </td>`;
                         tBody += `<td> <button>Delete</button> </td>`
                     tBody += `</tr>`
                 });

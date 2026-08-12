@@ -39,6 +39,13 @@
                 die("Error while inserting data! <br>" . $e);
             }
         }
+        //INSERT INTO table columns VALUES (?)
+        //UPDATE table SET col 1 = ?, col 2 = ? WHERE id = ?
+        public function update ($table, $data, $where){
+            try{
+                $prep=$types="";
+            }
+        }
 
         //Select function serves as a flexible way of reusing a single function for ALL system queries
         //Search, ReturnAll, etc.
