@@ -101,6 +101,7 @@
                 
                 <button type = "submit" name = "edit_book">Save Changes</button>
                 <button type = "button" id = "closePanelBtn">Cancel</button>
+            </form>
         </div>
     </div>
 </body>

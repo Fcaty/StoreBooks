@@ -30,6 +30,33 @@ $(document).ready(function() {
         });
     });
 
+    $('#editBookForm').on('submit', function(e){
+        e.preventDefault();
+        var datas = $(this).serializeArray();
+        var data_array = {};
+        $.map(datas, function(data){
+            data_array[data['name']]=data['value'];
+        });
+
+        $.ajax({
+            url: 'db/request.php',
+            method: 'POST',
+            data: {
+                'update_book':true,
+                ...data_array,
+            },
+            success: function(result){
+                console.log(result);
+                //$('#editBookForm')[0].reset();
+                //loadBookData();
+            },
+            error: function(err){
+                alert("Error occurred while editing product data");
+            }
+        });
+    });
+
+
     //Event Listener for Search
     $('#search-bar').on('keyup', function() {
         loadBookData();
@@ -164,3 +191,4 @@ function loadUserData(){
         }
     });
 }
+

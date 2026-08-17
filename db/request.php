@@ -9,6 +9,19 @@
         $database->insert('books', [...$_POST]);
     }
 
+    //updates existing book
+    if(isset($_POST['update_book'])){
+        unset($_POST['update_book']);
+
+        $id = ["id"=>$_POST['edit_book_id']];
+        $updateBookData = [
+            'book_name' 
+        ]
+        unset($_POST['edit_book_id']);
+
+        $database->update('books', [...$_POST], $id);
+    }
+
     //fetches all books based on query conditions
     if(isset($_POST['fetch_books'])){
         $searchQuery = $_POST['search_query'];
@@ -61,4 +74,6 @@
 
         echo json_encode($datas);
     }
+
+
 ?>

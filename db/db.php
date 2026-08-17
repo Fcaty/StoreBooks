@@ -43,7 +43,40 @@
         //UPDATE table SET col 1 = ?, col 2 = ? WHERE id = ?
         public function update ($table, $data, $where){
             try{
-                $prep=$types="";
+                $update=$types="";
+
+                foreach($data as $key => $value){
+                    $update .= "$key = ?, ";
+                    $types .= substr(gettype($value), 0, 1);
+                }
+
+                if(!is_null($where)){
+                    $cond = "";
+
+                    foreach($where as $key => $value){
+                        $operator = "=";
+                        $column = $key;
+
+                        if (strpos($key, ' ') !== false){
+                            list($column, $operator) = explode(' ', $key, 2);
+                        }
+
+                        $cond .= $column . " " .$operator . "? AND ";
+                        $types .= substr(gettype($value), 0, 1);
+
+                        
+                    }
+
+                    $cond = substr($cond, 0, -5);
+                }
+
+                $update = substr($update, 0, -1);
+                die("UPDATE $table SET $update WHERE $cond");
+
+                //$stmt = $this->conn->prepare("UPDATE $table SET $update WHERE $cond");
+                
+            } catch (Exception $e) {
+                die("Error while updating data! <br>". $e);
             }
         }
 
