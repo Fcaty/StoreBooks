@@ -2,6 +2,7 @@ $(document).ready(function() {
     //Function call for book info loading
     loadBookData();
     loadBookGenres();
+    loadBookNames();
     loadUserData();
 
     //Event listener for submit button event listener
@@ -47,7 +48,7 @@ $(document).ready(function() {
             },
             success: function(result){
                 $('#editBookForm')[0].reset();
-                $('#editPanel').fadeOut();
+                $('#editPanelBook').fadeOut();
                 loadBookData();
             },
             error: function(err){
@@ -55,6 +56,29 @@ $(document).ready(function() {
             }
         });
     });
+
+    $('#editUserForm').on('submit', function(e){
+        e.preventDefault();
+        var datas = $(this).serializeArray();
+        var data_array = {};
+        $.map(datas, function(data){
+            data_array[data['name']] = data['value'];
+        });
+
+        $.ajax({
+            url: 'db/request.php',
+            method: 'POST',
+            data: {
+                'update_user': true,
+                ...data_array,
+            },
+            success: function(result){
+                $('#editUserForm')[0].reset();
+                $('#editPanelUser').fadeOut();
+                loadUserData();
+            }
+        })
+    })
 
 
     //Event Listener for Search
@@ -66,7 +90,15 @@ $(document).ready(function() {
         loadBookData();
     });
 
-    $(document).on('click', '.edit-btn', function(){
+    $('#search-bar-bookselect').on('keyup', function(){
+        loadBookNames();
+    });
+
+    $('#book-select').on('change', function(){
+        loadOrderData();
+    })
+
+    $(document).on('click', '.edit-btn-book', function(){
         let id = $(this).data('id');
         let name = $(this).data('name');
         let price = $(this).data('price');
@@ -83,11 +115,29 @@ $(document).ready(function() {
         $('#edit_book_stock').val(stock);
         $('#edit_book_sold').val(sold);
 
-        $('#editPanel').fadeIn();
+        $('#editPanelBook').fadeIn();
     });
 
-    $('#closePanelBtn').on('click', function(){
-        $('#editPanel').fadeOut();
+    $(document).on('click', '.edit-btn-user', function(){
+        let id = $(this).data('id');
+        let name = $(this).data('name');
+        let role = $(this).data('role');
+        let email = $(this).data('email');
+
+        $('#edit_user_id').val(id);
+        $('#edit_user_name').val(name);
+        $('#edit_user_role').val(role);
+        $('#edit_user_email').val(email);
+
+        $('#editPanelUser').fadeIn();
+    })
+
+        $('#closeBookPanelBtn').on('click', function(){
+        $('#editPanelBook').fadeOut();
+    });
+
+        $('#closeUserPanelBtn').on('click', function(){
+        $('#editPanelUser').fadeOut();
     });
 
     $('.panel-overlay').on('click', function(e) {
@@ -123,7 +173,7 @@ function loadBookData() {
                         tBody += `<td> ${data.book_author}</td>`
                         tBody += `<td> ${data.book_stock}</td>`
                         tBody += `<td> ${data.book_sold}</td>`
-                        tBody += `<td> <button class = "edit-btn"
+                        tBody += `<td> <button class = "edit-btn-book"
                                                data-id= "${data.book_id}"
                                                data-name= "${data.book_name}"
                                                data-price= "${data.book_price}"
@@ -145,6 +195,7 @@ function loadBookData() {
         });
     }
 
+    //Code for loading book genres 
 function loadBookGenres(){
     $.ajax({
         url: 'db/request.php',
@@ -165,11 +216,36 @@ function loadBookGenres(){
     });
 }
 
+    //Code for loading book names
+function loadBookNames(){
+    let searchText = $('#search-bar-bookselect').val();
+
+    $.ajax({
+        url: 'db/request.php',
+        method: 'POST',
+        data: {'fetch_book_names': true,
+               'search_book_query': searchText},
+        success: function(result){
+            var selectOptions = `<option value = ""> None </option>`;
+            var datas = JSON.parse(result);
+
+            datas.forEach(function(data){
+                selectOptions += `<option value = "${data.book_id}"> ${data.book_name} ID: ${data.book_id}</option>`
+            });
+            $('#book-select').html(selectOptions);
+        },
+        error: function(err){
+            alert("Error occured while fetching genre data.");
+        }
+    });
+}
+
+    //Code for loading all user data
 function loadUserData(){
     $.ajax({
         url: 'db/request.php',
         method: 'POST',
-        data: {fetch_users: true},
+        data: {'fetch_users': true},
         success: function(result){
             var tBody = ``;
             var datas = JSON.parse(result);
@@ -180,7 +256,14 @@ function loadUserData(){
                     tBody += `<td>${data.user_name}</td>`
                     tBody += `<td>${data.user_role}</td>`
                     tBody += `<td>${data.user_email}</td>`
-                    tBody += `<td> <button>Edit</button> </td>`
+                    tBody += `<td> <button class = "edit-btn-user"
+                                           data-id = "${data.user_id}"
+                                           data-name = "${data.user_name}"
+                                           data-role = "${data.user_role}"
+                                           data-email = "${data.user_email}">
+                                           Edit
+                                           </button> 
+                              </td>`
                     tBody += `<td> <button>Delete</button> </td>`
                 tBody += `</tr>`;
             });
@@ -190,5 +273,42 @@ function loadUserData(){
             alert("Error occured while fetching user data.");
         }
     });
+}
+
+function loadOrderData(){
+    let selectedBook = $('#book-select').val();
+
+    $.ajax({
+        url: 'db/request.php',
+        method: 'POST',
+        data: {'fetch_orders': true,
+               'selected_book': selectedBook
+        },
+        success: function(result){
+            var tBody = ``;
+            var bookStat = ``;
+            var datas = JSON.parse(result);
+            var total_price = 0;
+            var total_orders = 0;
+
+            datas.forEach(function(data){
+                tBody += `<tr>`;
+                    tBody += `<td> ${data.order_id} </td>`
+                    tBody += `<td> ${data.user_id} </td>`
+                    tBody += `<td> ${data.user_name} </td>`
+                    tBody += `<td> ${data.order_date} </td>`
+                tBody += `</tr>`
+                
+                total_price += data.book_price;
+                total_orders++;
+            });
+            $('#tBodyOrders').html(tBody);
+
+            bookStat += `<p> Total Orders: ${total_orders} </p>
+                        <p> Total Price: ${total_price} </p>`
+        
+            $('#book-order-statistics').html(bookStat);
+        }
+    })
 }
 

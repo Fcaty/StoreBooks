@@ -73,11 +73,37 @@
                     </tbody>
                 </table>
         </section>
+
+        <section id = "book-order-information">
+            <h2>Book Order Information</h2>
+                <label for = "search-bar-bookselect">Search Book: </label>
+                <input type = "text" id = "search-bar-bookselect" name = "search-bar-bookselect">
+
+                <label for = "book-select">Select Book:</label>
+                <select id = "book-select" name = "book-select">
+
+                </select>
+                <table>
+                    <thead>
+                        <th>Order ID</th>
+                        <th>User ID</th>
+                        <th>User Name</th>
+                        <th>Date and Time</th>
+                    </thead>
+                    <tbody id = "tBodyOrders">
+                        
+                    </tbody>
+                </table>
+
+                <div id = "book-order-statistics">
+
+                </div>
+        </section>
     </main>
 
-    <div id = "editPanel" class = "panel-overlay">
+    <div id = "editPanelBook" class = "panel-overlay">
         <div class = "panel-content">
-            <h2>Edit Information</h2>
+            <h2>Edit Book Information</h2>
             <form id = "editBookForm" method = "POST" action = "db/request.php">
                 <input type = "hidden" name = "edit_book_id" id = "edit_book_id">
 
@@ -100,7 +126,30 @@
                 <input type = "number" name = "edit_book_sold" id = "edit_book_sold" placeholder = "Current Stock" required>
                 
                 <button type = "submit" name = "edit_book">Save Changes</button>
-                <button type = "button" id = "closePanelBtn">Cancel</button>
+                <button type = "button" id = "closeBookPanelBtn">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <div id = "editPanelUser" class = "panel-overlay">
+        <div class = panel-content>
+            <h2>Edit User Information</h2>
+            <form id = "editUserForm" method = "POST" action = "db/request.php">
+                <input type = "hidden" name = "edit_user_id" id = "edit_user_id">
+
+                <label for = "edit_user_name">User Name</label>
+                <input type = "text" name = "edit_user_name" id = "edit_user_name">
+
+                <label for = "edit_user_role">User Role</label>
+                <select id = "edit_user_role" name = "edit_user_role">
+                    <option value = "User">User</option>
+                    <option value = "Admin">Admin</option>
+                </select>
+
+                <label for = "edit_user_email">User Email</label>
+                <input type = email name = "edit_user_email" id = "edit_user_email">
+                <button type = "submit" name = "edit_user">Save Changes</button>
+                <button type = "button" id = "closeUserPanelBtn">Cancel</button>
             </form>
         </div>
     </div>

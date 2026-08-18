@@ -70,6 +70,30 @@
         echo json_encode($datas);
     }
 
+    //fetches all book names for dropdown
+    if(isset($_POST['fetch_book_names'])){
+        $searchQuery = $_POST['search_book_query'];
+
+        $whereData = [];
+
+        if(!empty($searchQuery)){
+            $whereData['book_name LIKE'] = "%" . $searchQuery . "%";
+        }
+
+        if(empty($whereData)){
+            $database->select('books', 'DISTINCT book_id, book_name');
+        } else {
+            $database->select('books', 'DISTINCT book_id, book_name', $whereData);
+        }
+
+        $datas = [];
+        while($row = $database->res->fetch_assoc()){
+            array_push($datas, $row);
+        }
+
+        echo json_encode($datas);
+    }
+
     if(isset($_POST['fetch_users'])){
         $database->select('users', '*');
 
@@ -80,6 +104,40 @@
         }
 
         echo json_encode($datas);
+    }
+
+    if(isset($_POST['fetch_orders'])){
+        unset($_POST['fetch_orders']);
+        $selectedBook = $_POST['selected_book'];
+
+        $table = "orders o JOIN books b ON o.book_id = b.book_id JOIN users u ON o.user_id = u.user_id";
+        $rows = "o.order_id, u.user_id, u.user_name, o.order_date, b.book_price";
+        $where = ["o.book_id" => $selectedBook];
+
+        $database->select($table, $rows, $where);
+
+        $datas = [];
+
+        while($row = $database->res->fetch_assoc()){
+            array_push($datas, $row);
+        }
+
+        echo json_encode($datas);
+    }
+
+    if(isset($_POST['update_user'])){
+        unset($_POST['update_user']);
+
+        $id = ['user_id' => $_POST['edit_user_id']];
+        unset($_POST['edit_user_id']);
+
+        $updateUserData = [
+            'user_name' => $_POST['edit_user_name'],
+            'user_role' => $_POST['edit_user_role'],
+            'user_email' => $_POST['edit_user_email']
+        ];
+
+        $database -> update('users', $updateUserData, $id);
     }
 
 
