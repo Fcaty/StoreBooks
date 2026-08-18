@@ -46,9 +46,9 @@ $(document).ready(function() {
                 ...data_array,
             },
             success: function(result){
-                console.log(result);
-                //$('#editBookForm')[0].reset();
-                //loadBookData();
+                $('#editBookForm')[0].reset();
+                $('#editPanel').fadeOut();
+                loadBookData();
             },
             error: function(err){
                 alert("Error occurred while editing product data");

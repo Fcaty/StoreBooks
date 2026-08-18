@@ -13,13 +13,20 @@
     if(isset($_POST['update_book'])){
         unset($_POST['update_book']);
 
-        $id = ["id"=>$_POST['edit_book_id']];
+        $id = ["book_id"=>$_POST['edit_book_id']];
+
         $updateBookData = [
-            'book_name' 
-        ]
+            'book_name' => $_POST['edit_book_name'],
+            'book_price' => $_POST['edit_book_price'],
+            'book_genre' => $_POST['edit_book_genre'],
+            'book_author' => $_POST['edit_book_author'],
+            'book_stock' => $_POST['edit_book_stock'],
+            'book_sold' => $_POST['edit_book_sold']
+        ];
+
         unset($_POST['edit_book_id']);
 
-        $database->update('books', [...$_POST], $id);
+        $database->update('books', $updateBookData, $id);
     }
 
     //fetches all books based on query conditions

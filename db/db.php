@@ -54,7 +54,7 @@
                     $cond = "";
 
                     foreach($where as $key => $value){
-                        $operator = "=";
+                        $operator = "= ";
                         $column = $key;
 
                         if (strpos($key, ' ') !== false){
@@ -64,16 +64,17 @@
                         $cond .= $column . " " .$operator . "? AND ";
                         $types .= substr(gettype($value), 0, 1);
 
-                        
                     }
 
                     $cond = substr($cond, 0, -5);
                 }
 
-                $update = substr($update, 0, -1);
-                die("UPDATE $table SET $update WHERE $cond");
+                $update = substr($update, 0, -2);
 
-                //$stmt = $this->conn->prepare("UPDATE $table SET $update WHERE $cond");
+                $stmt = $this->conn->prepare("UPDATE $table SET $update WHERE $cond");
+                $stmt -> bind_param($types, ...array_merge(array_values($data), array_values($where)));
+                $stmt -> execute();
+                $stmt -> close();
                 
             } catch (Exception $e) {
                 die("Error while updating data! <br>". $e);
@@ -121,35 +122,35 @@
             }
         }
 
-        public function update ($table, $data, $where) {
-            try {
-                $set=$types="";
-                $values = [];
+        // public function update ($table, $data, $where) {
+        //     try {
+        //         $set=$types="";
+        //         $values = [];
 
-                foreach($data as $key => $value){
-                    $set .= "$key = ?, ";
-                    $types .= substr(gettype($value), 0, 1);
-                    $values[] = $value;
-                }
-                $set = substr($set, 0, -2);
+        //         foreach($data as $key => $value){
+        //             $set .= "$key = ?, ";
+        //             $types .= substr(gettype($value), 0, 1);
+        //             $values[] = $value;
+        //         }
+        //         $set = substr($set, 0, -2);
 
-                $cond="";
-                foreach($where as $key => $value){
-                    $cond .= "$key = ? AND ";
-                    $types .= substr(gettype($value), 0, 1);
-                    $values[] = $value;
-                }
-                $cond = substr($cond, 0, -5);
+        //         $cond="";
+        //         foreach($where as $key => $value){
+        //             $cond .= "$key = ? AND ";
+        //             $types .= substr(gettype($value), 0, 1);
+        //             $values[] = $value;
+        //         }
+        //         $cond = substr($cond, 0, -5);
 
-                $stmt = $this->conn->prepare("UPDATE $table SET $set WHERE $cond");
-                $stmt -> bind_param($types , ...$values);
-                $stmt -> execute();
-                $stmt -> close();
+        //         $stmt = $this->conn->prepare("UPDATE $table SET $set WHERE $cond");
+        //         $stmt -> bind_param($types , ...$values);
+        //         $stmt -> execute();
+        //         $stmt -> close();
 
-            } catch (Exception $e) {
-                die("Error while updating data! <br>" . $e);
-            }
-        }
+        //     } catch (Exception $e) {
+        //         die("Error while updating data! <br>" . $e);
+        //     }
+        // }
     }
 
 ?>
