@@ -22,6 +22,7 @@
 <body>
     <header>
         <h1>StoreBooks: Providing All Your Reading Needs</h1>
+        <a href = "logout.php">Log Out</a>
         <nav>
         </nav>
     </header>
