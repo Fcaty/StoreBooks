@@ -400,7 +400,7 @@ function loadOrderData(){
                     tBody += `<td> ${data.order_date} </td>`
                 tBody += `</tr>`
                 
-                total_price += data.book_price;
+                total_price += parseFloat(data.book_price);
                 total_orders++;
             });
             $('#tBodyOrders').html(tBody);
