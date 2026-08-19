@@ -94,6 +94,7 @@
         echo json_encode($datas);
     }
 
+    //fetches all user data
     if(isset($_POST['fetch_users'])){
         $database->select('users', '*');
 
@@ -106,6 +107,8 @@
         echo json_encode($datas);
     }
 
+    
+    //fetches order data
     if(isset($_POST['fetch_orders'])){
         unset($_POST['fetch_orders']);
         $selectedBook = $_POST['selected_book'];
@@ -125,6 +128,7 @@
         echo json_encode($datas);
     }
 
+    //updates user data
     if(isset($_POST['update_user'])){
         unset($_POST['update_user']);
 
@@ -140,5 +144,21 @@
         $database -> update('users', $updateUserData, $id);
     }
 
+    if(isset($_POST['delete_user'])){
+        unset($_POST['delete_user']);
 
+        $id = ['user_id' => $_POST['delete_user_id']];
+        unset($_POST['delete_user_id']);
+
+        $database -> delete('users', $id);
+    }
+
+    if(isset($_POST['delete_book'])){
+        unset($_POST['delete_book']);
+
+        $id = ['book_id' => $_POST['delete_book_id']];
+        unset($_POST['delete_book_id']);
+
+        $database -> delete('books', $id);
+    }
 ?>

@@ -23,6 +23,7 @@ $(document).ready(function() {
             },
             success: function(result){
                 $('#addBookForm')[0].reset();
+                $('#addPanelBook').fadeOut();
                 loadBookData();
             },
             error: function(err){
@@ -76,10 +77,62 @@ $(document).ready(function() {
                 $('#editUserForm')[0].reset();
                 $('#editPanelUser').fadeOut();
                 loadUserData();
+            },
+            error: function(err){
+                alert("Error occured while editing user data");
             }
         })
     })
 
+    $('#deleteBookForm').on('submit', function(e){
+        e.preventDefault();
+        var datas = $(this).serializeArray();
+        var data_array = {};
+        $.map(datas, function(data){
+            data_array[data['name']] = data['value'];
+        });
+
+        $.ajax({
+            url: 'db/request.php',
+            method: 'POST',
+            data: {
+                'delete_book': true,
+                ...data_array,
+            },
+            success: function(result){
+                $('#deleteBookForm')[0].reset();
+                $('#deletePanelBook').fadeOut();
+                loadBookData();
+                loadBookNames();
+            }
+        })
+    })
+    
+    $('#deleteUserForm').on('submit', function(e){
+        e.preventDefault();
+        var datas = $(this).serializeArray();
+        var data_array = {};
+        $.map(datas, function(data){
+            data_array[data['name']] = data['value'];
+        });
+
+        $.ajax({
+            url: 'db/request.php',
+            method: 'POST',
+            data: {
+                'delete_user': true,
+                ...data_array,
+            },
+            success: function(result){
+                $('#deleteUserForm')[0].reset();
+                $('deletePanelUser').fadeOut();
+                loadUserData();
+            },
+            error: function(err){
+                alert("Error occured while deleting user data");
+            }
+        })
+    })
 
     //Event Listener for Search
     $('#search-bar').on('keyup', function() {
@@ -96,6 +149,10 @@ $(document).ready(function() {
 
     $('#book-select').on('change', function(){
         loadOrderData();
+    })
+
+    $(document).on('click', '#add-btn-book', function(){
+        $('#addPanelBook').fadeIn();
     })
 
     $(document).on('click', '.edit-btn-book', function(){
@@ -130,6 +187,32 @@ $(document).ready(function() {
         $('#edit_user_email').val(email);
 
         $('#editPanelUser').fadeIn();
+    });
+
+    $(document).on('click', '.delete-btn-user', function(){
+        let id = $(this).data('id');
+        let name = $(this).data('name');
+
+        $('#delete_user_id').val(id);
+
+        var confText = `Are you sure you would like to delete user ${name}?`
+        $('#delete-confirmationuser-text').html(confText);
+        $('#deletePanelUser').fadeIn();
+    });
+
+    $(document).on('click', '.delete-btn-book', function(){
+        let id = $(this).data('id');
+        let name = $(this).data('name');
+
+        $('#delete_book_id').val(id);
+
+        var confText = `Are you sure you would like to delete book ${name}?`
+        $('#delete-confirmationbook-text').html(confText);
+        $('#deletePanelBook').fadeIn();
+    })
+
+        $('#closeAddBookPanelBtn').on('click', function(){
+        $('#addPanelBook').fadeOut();
     })
 
         $('#closeBookPanelBtn').on('click', function(){
@@ -139,6 +222,15 @@ $(document).ready(function() {
         $('#closeUserPanelBtn').on('click', function(){
         $('#editPanelUser').fadeOut();
     });
+
+        $('#closeDeleteBookPanelBtn').on('click', function(){
+        $('#deletePanelBook').fadeOut();
+    })
+
+        $('#closeDeleteUserPanelBtn').on('click', function(){
+        $('#deletePanelUser').fadeOut();
+    });
+            
 
     $('.panel-overlay').on('click', function(e) {
         if(e.target === this){
@@ -184,7 +276,11 @@ function loadBookData() {
                                                Edit
                                                </button> 
                                   </td>`;
-                        tBody += `<td> <button>Delete</button> </td>`
+                        tBody += `<td> <button class = "delete-btn-book"
+                                                data-id = "${data.book_id}"
+                                                data-name = "${data.book_name}">
+                                                Delete
+                                                </button> </td>`
                     tBody += `</tr>`
                 });
                 $('#tBodyBooks').html(tBody);
@@ -264,7 +360,12 @@ function loadUserData(){
                                            Edit
                                            </button> 
                               </td>`
-                    tBody += `<td> <button>Delete</button> </td>`
+                    tBody += `<td> <button class = "delete-btn-user"
+                                    data-id = "${data.user_id}"
+                                    data-name = "${data.user_name}"
+                                    >
+                                    Delete
+                                    </button> </td>`
                 tBody += `</tr>`;
             });
             $('#tBodyUsers').html(tBody);
@@ -311,4 +412,3 @@ function loadOrderData(){
         }
     })
 }
-

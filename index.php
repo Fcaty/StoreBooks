@@ -21,15 +21,6 @@
 
     <main>
         <section id = "general-book-info">
-            <h2>Add New Book Information</h2>
-            <form id = "addBookForm" method = "POST" action = "db/request.php">
-                <input type = "text" name = "book_name" id = "name" placeholder = "Book Name" required>
-                <input type = "number" name = "book_price" id = "price" placeholder = "Book Price" required>
-                <input type = "text" name = "book_genre" id = "genre" placeholder = "Book Genre" required>
-                <input type = "text" name = "book_author" id = "author" placeholder = "Book Author" required>
-                <input type = "number" name = "book_stock" id = "stock" placeholder = "Current Stock" required>
-                <button type = "submit" name = "add_book">Submit</button>
-            </form>
             <h2>Book Information</h2>
             <label for = "search-bar">Search Book: </label>
             <input type = "text" name = "search-bar" id = "search-bar" placeholder = "Search here...">
@@ -54,6 +45,7 @@
                     
                 </tbody>
             </table>
+            <button type = "button" id = "add-btn-book">Add New Book</button>
         </section>
 
         <section id = "user-information">
@@ -100,6 +92,30 @@
                 </div>
         </section>
     </main>
+
+    <div id = "addPanelBook" class = "panel-overlay">
+        <div class = "panel-content">
+            <h2>Add New Book Information</h2>
+            <form id = "addBookForm" method = "POST" action = "db/request.php">
+                <label for = "book_name">Book Name: </label>
+                <input type = "text" name = "book_name" id = "name" placeholder = "Book Name" required>
+
+                <label for = "book_price">Book Price: </label>
+                <input type = "number" name = "book_price" id = "price" placeholder = "Book Price" required>
+
+                <label for = "book_genre">Book Genre: </label>
+                <input type = "text" name = "book_genre" id = "genre" placeholder = "Book Genre" required>
+
+                <label for = "book_author">Book Author: </label>
+                <input type = "text" name = "book_author" id = "author" placeholder = "Book Author" required>
+
+                <label for = "book_stock">Book Stock: </label>
+                <input type = "number" name = "book_stock" id = "stock" placeholder = "Current Stock" required>
+                <button type = "submit" name = "add_book">Submit</button>
+                <button type = "button" id = "closeAddBookPanelBtn">Cancel</button>
+            </form>
+        </div>
+    </div>
 
     <div id = "editPanelBook" class = "panel-overlay">
         <div class = "panel-content">
@@ -150,6 +166,30 @@
                 <input type = email name = "edit_user_email" id = "edit_user_email">
                 <button type = "submit" name = "edit_user">Save Changes</button>
                 <button type = "button" id = "closeUserPanelBtn">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <div id = "deletePanelBook" class = "panel-overlay">
+        <div class = "panel-content">
+            <h2>Delete Book Confirmation</h2>
+            <form id = "deleteBookForm" method = "POST" action = "db/request.php">
+                <input type = "hidden" name = "delete_book_id" id = "delete_book_id">
+                <p id = "delete-confirmationbook-text"></p>
+                <button type = "submit" name = "delete_book">Yes</button>
+                <button type = "button" id = "closeDeleteBookPanelBtn">No</button>
+            </form>
+        </div>
+    </div>
+
+    <div id = "deletePanelUser" class = "panel-overlay">
+        <div class = "panel-content">
+            <h2>Delete User Confirmation</h2>
+            <form id = "deleteUserForm" method = "POST" action = "db/request.php">
+                <input type = "hidden" name = "delete_user_id" id = "delete_user_id">
+                <p id = "delete-confirmationuser-text"></p>
+                <button type = "submit" name = "delete_user">Yes</button>
+                <button type = "button" id = "closeDeleteUserPanelBtn">No</button>
             </form>
         </div>
     </div>

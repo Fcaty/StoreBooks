@@ -122,6 +122,33 @@
             }
         }
 
+        //DELETE FROM table WHERE condition
+        public function delete ($table, $where){
+            try{
+                $cond=$types="";
+
+                foreach($where as $key => $value){
+                    $operator = "=";
+                    $column = $key;
+
+                    if (strpos($key, ' ') !== false){
+                        list($column, $operator) = explode(' ', $key, 2);
+                    }
+
+                    $cond .= $column . " " . $operator . " ? AND ";
+                    $types .= substr(gettype($value), 0, 1);
+                }
+
+                $cond = substr($cond, 0, -5);
+                $stmt = $this->conn->prepare("DELETE FROM $table WHERE $cond");
+                $stmt -> bind_param($types,...array_values($where));
+                $stmt -> execute();
+
+            } catch (Exception $e) {
+                die("Error requesting data! <br> " . $e);
+            }
+        }
+
         // public function update ($table, $data, $where) {
         //     try {
         //         $set=$types="";
