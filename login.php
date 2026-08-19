@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION['user_id'])) {
-    header('Location: ' . ($_SESSION['user_role'] === 'Admin' ? 'index.php' : 'shop.php'));
+    header('Location: ' . ($_SESSION['user_role'] === 'Admin' ? 'admin.php' : 'shop.php'));
     exit;
 }
 ?>

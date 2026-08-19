@@ -59,7 +59,7 @@ if (isset($_POST['buy_book'])) {
         exit;
     }
 
-    $database->insert('sales', [
+    $database->insert('orders', [
         'book_id' => $book_id,
         'user_id' => $user_id
     ]);
