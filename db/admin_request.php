@@ -13,6 +13,7 @@
                 return;
             }
 
+            //'if $_[POST] trigger => name of method'
             $actions = [
                 'add_book' => 'addBook',
                 'add_user' => 'addUser',
@@ -34,6 +35,8 @@
                 }
             }
         }
+
+        //methods start here
         private function addBook(){
             unset($_POST['add_book']);
             $this->database->insert('books', [...$_POST]);

@@ -39,8 +39,7 @@
                 die("Error while inserting data! <br>" . $e);
             }
         }
-        //INSERT INTO table columns VALUES (?)
-        //UPDATE table SET col 1 = ?, col 2 = ? WHERE id = ?
+
         public function update ($table, $data, $where){
             try{
                 $update=$types="";
