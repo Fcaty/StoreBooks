@@ -9,6 +9,15 @@
         $database->insert('books', [...$_POST]);
     }
 
+    if(isset($_POST['add_user'])){
+        unset($_POST['add_user']);
+        unset($_POST['conf_user_password']);
+        
+        $_POST['user_password'] = password_hash($_POST['user_password'], PASSWORD_DEFAULT);
+
+        $database->insert('users', [...$_POST]);
+    }
+
     //updates existing book
     if(isset($_POST['update_book'])){
         unset($_POST['update_book']);

@@ -32,6 +32,34 @@ $(document).ready(function() {
         });
     });
 
+    $('#addUserForm').on('submit', function(e){
+        e.preventDefault();
+        var datas = $(this).serializeArray();
+        var data_array = {};
+
+        $.map(datas, function(data){
+            data_array[data['name']] = data['value'];
+        })
+
+        if(datas.user_password !== datas.conf_user_password){
+            alert("Your passwords do not match!");
+        } else {
+            $.ajax({
+                url: 'db/admin_request.php',
+                method: 'POST',
+                data: {
+                    'add_user': true,
+                    ...data_array,
+                },
+                success: function(result){
+                    $('#addUserForm')[0].reset();
+                    $('addPanelUser').fadeOut();
+                    loadUserData();
+                }
+            })
+        }
+    })
+
     $('#editBookForm').on('submit', function(e){
         e.preventDefault();
         var datas = $(this).serializeArray();
@@ -155,6 +183,10 @@ $(document).ready(function() {
         $('#addPanelBook').fadeIn();
     })
 
+    $(document).on('click', '#add-btn-user', function(){
+        $('#addPanelUser').fadeIn();
+    })
+
     $(document).on('click', '.edit-btn-book', function(){
         let id = $(this).data('id');
         let name = $(this).data('name');
@@ -213,6 +245,10 @@ $(document).ready(function() {
 
         $('#closeAddBookPanelBtn').on('click', function(){
         $('#addPanelBook').fadeOut();
+    })
+
+        $('#closeAddUserPanelBtn').on('click', function(){
+        $('#addPanelUser').fadeOut();
     })
 
         $('#closeBookPanelBtn').on('click', function(){

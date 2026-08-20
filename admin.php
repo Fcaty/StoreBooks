@@ -22,6 +22,7 @@
 <body>
     <header>
         <h1>StoreBooks: Providing All Your Reading Needs</h1>
+        <span>Welcome, <?php echo htmlspecialchars($_SESSION['user_name']); ?></span>
         <a href = "logout.php">Log Out</a>
         <nav>
         </nav>
@@ -72,6 +73,7 @@
                         
                     </tbody>
                 </table>
+                <button type = "button" id = "add-btn-user">Add New User</button>
         </section>
 
         <section id = "book-order-information">
@@ -104,7 +106,7 @@
     <div id = "addPanelBook" class = "panel-overlay">
         <div class = "panel-content">
             <h2>Add New Book Information</h2>
-            <form id = "addBookForm" method = "POST" action = "db/request.php">
+            <form id = "addBookForm" method = "POST">
                 <label for = "book_name">Book Name: </label>
                 <input type = "text" name = "book_name" id = "name" placeholder = "Book Name" required>
 
@@ -125,6 +127,33 @@
         </div>
     </div>
 
+    <div id = "addPanelUser" class = "panel-overlay">
+        <div class = "panel-content">
+            <h2>Add New User Information</h2>
+            <form id = "addUserForm" method = "POST">
+                <label for = "user_name">User Name: </label>
+                <input type = "text" name = "user_name" id = "user_name" placeholder = "User Name" required>
+
+                <label for = "user_role">User Role: </label>
+                <select name = "user_role" id = "user_id">
+                    <option value = "Admin">Admin</option>
+                    <option value = "Customer">Customer</option>
+                </select>
+
+                <label for = "user_email">User Email: </label>
+                <input type = "email" name = "user_email" id = "user_email" placeholder = "User Email" required>
+
+                <label for = "user_password">User Password: </label>
+                <input type = "password" name = "user_password" id = "user_password" placeholder = "User Password" required>
+
+                <label for = "confirm_password">Confirm User Password: </label>
+                <input type = "password" name = "conf_user_password" id = "conf_user_password" placeholder = "Confirm User Password" required>
+                <button type = "submit">Register User</button>
+                <button type = "button" id = "closeAddUserPanelBtn">Cancel</button>
+            </form>
+        </div>
+    </div>
+
     <div id = "editPanelBook" class = "panel-overlay">
         <div class = "panel-content">
             <h2>Edit Book Information</h2>
@@ -135,7 +164,7 @@
                 <input type = "text" name = "edit_book_name" id = "edit_book_name" placeholder = "Book Name" required>
 
                 <label for = "edit_book_price">Book Price:</label>
-                <input type = "number" name = "edit_book_price" id = "edit_book_price" placeholder = "Book Price" required>
+                <input type = "number" name = "edit_book_price" id = "edit_book_price" placeholder = "Book Price" required step = "0.01" min = "0">
 
                 <label for = "edit_book_genre">Book Genre:</label>
                 <input type = "text" name = "edit_book_genre" id = "edit_book_genre" placeholder = "Book Genre" required>
@@ -144,10 +173,10 @@
                 <input type = "text" name = "edit_book_author" id = "edit_book_author" placeholder = "Book Author" required>
 
                 <label for = "edit_book_stock">Book Stock:</label>
-                <input type = "number" name = "edit_book_stock" id = "edit_book_stock" placeholder = "Current Stock" required>
+                <input type = "number" name = "edit_book_stock" id = "edit_book_stock" placeholder = "Current Stock" required min = "0">
 
                 <label for = "edit_book_sold">Books Sold:</label>
-                <input type = "number" name = "edit_book_sold" id = "edit_book_sold" placeholder = "Current Stock" required>
+                <input type = "number" name = "edit_book_sold" id = "edit_book_sold" placeholder = "Current Stock" required min = "0">
                 
                 <button type = "submit" name = "edit_book">Save Changes</button>
                 <button type = "button" id = "closeBookPanelBtn">Cancel</button>
@@ -202,5 +231,5 @@
         </div>
     </div>
 </body>
-<script type = "text/javascript" src = resources/script.js> </script>
+<script type = "text/javascript" src = resources/admin.js> </script>
 </html>
