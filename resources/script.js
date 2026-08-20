@@ -15,7 +15,7 @@ $(document).ready(function() {
      });
 
         $.ajax({
-            url: 'db/request.php',
+            url: 'db/admin_request.php',
             method: 'POST',
             data: {
                 'add_book': true,
@@ -41,7 +41,7 @@ $(document).ready(function() {
         });
 
         $.ajax({
-            url: 'db/request.php',
+            url: 'db/admin_request.php',
             method: 'POST',
             data: {
                 'update_book':true,
@@ -67,7 +67,7 @@ $(document).ready(function() {
         });
 
         $.ajax({
-            url: 'db/request.php',
+            url: 'db/admin_request.php',
             method: 'POST',
             data: {
                 'update_user': true,
@@ -93,7 +93,7 @@ $(document).ready(function() {
         });
 
         $.ajax({
-            url: 'db/request.php',
+            url: 'db/admin_request.php',
             method: 'POST',
             data: {
                 'delete_book': true,
@@ -117,7 +117,7 @@ $(document).ready(function() {
         });
 
         $.ajax({
-            url: 'db/request.php',
+            url: 'db/admin_request.php',
             method: 'POST',
             data: {
                 'delete_user': true,
@@ -246,7 +246,7 @@ function loadBookData() {
         let selectedGenre = $('#genre-select').val();
 
         $.ajax({
-            url: 'db/request.php',
+            url: 'db/admin_request.php',
             method: 'POST',
             data: { 'fetch_books': true,
                     'search_query': searchText,
@@ -294,7 +294,7 @@ function loadBookData() {
     //Code for loading book genres 
 function loadBookGenres(){
     $.ajax({
-        url: 'db/request.php',
+        url: 'db/admin_request.php',
         method: 'POST',
         data: { 'fetch_genres': true },
         success: function(result){
@@ -317,7 +317,7 @@ function loadBookNames(){
     let searchText = $('#search-bar-bookselect').val();
 
     $.ajax({
-        url: 'db/request.php',
+        url: 'db/admin_request.php',
         method: 'POST',
         data: {'fetch_book_names': true,
                'search_book_query': searchText},
@@ -339,7 +339,7 @@ function loadBookNames(){
     //Code for loading all user data
 function loadUserData(){
     $.ajax({
-        url: 'db/request.php',
+        url: 'db/admin_request.php',
         method: 'POST',
         data: {'fetch_users': true},
         success: function(result){
@@ -380,7 +380,7 @@ function loadOrderData(){
     let selectedBook = $('#book-select').val();
 
     $.ajax({
-        url: 'db/request.php',
+        url: 'db/admin_admin_request.php',
         method: 'POST',
         data: {'fetch_orders': true,
                'selected_book': selectedBook
