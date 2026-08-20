@@ -1,66 +1,21 @@
-$(document).ready(function() {
+class AdminPanel  {
+
+    constructor(){
+        this.loadBookData();
+        this.loadBookGenres();
+        this.loadBookNames();
+        this.loadUserData();
+
+        this.initEvents();
+    }
     //Function call for book info loading
-    loadBookData();
-    loadBookGenres();
-    loadBookNames();
-    loadUserData();
+    
 
     //Event listener for submit button event listener
-    $('#addBookForm').on('submit', function(e) {
-    e.preventDefault();
-    var datas = $(this).serializeArray();
-    var data_array = {};
-    $.map(datas, function(data){
-        data_array[data['name']]=data['value'];
-     });
+    initEvents(){
+        const self = this;
 
-        $.ajax({
-            url: 'db/admin_request.php',
-            method: 'POST',
-            data: {
-                'add_book': true,
-                ...data_array,
-            },
-            success: function(result){
-                $('#addBookForm')[0].reset();
-                $('#addPanelBook').fadeOut();
-                loadBookData();
-            },
-            error: function(err){
-                alert("Error occurred while adding product data");
-            }
-        });
-    });
-
-    $('#addUserForm').on('submit', function(e){
-        e.preventDefault();
-        var datas = $(this).serializeArray();
-        var data_array = {};
-
-        $.map(datas, function(data){
-            data_array[data['name']] = data['value'];
-        })
-
-        if(datas.user_password !== datas.conf_user_password){
-            alert("Your passwords do not match!");
-        } else {
-            $.ajax({
-                url: 'db/admin_request.php',
-                method: 'POST',
-                data: {
-                    'add_user': true,
-                    ...data_array,
-                },
-                success: function(result){
-                    $('#addUserForm')[0].reset();
-                    $('addPanelUser').fadeOut();
-                    loadUserData();
-                }
-            })
-        }
-    })
-
-    $('#editBookForm').on('submit', function(e){
+        $('#addBookForm').on('submit', function(e) {
         e.preventDefault();
         var datas = $(this).serializeArray();
         var data_array = {};
@@ -68,216 +23,270 @@ $(document).ready(function() {
             data_array[data['name']]=data['value'];
         });
 
-        $.ajax({
-            url: 'db/admin_request.php',
-            method: 'POST',
-            data: {
-                'update_book':true,
-                ...data_array,
-            },
-            success: function(result){
-                $('#editBookForm')[0].reset();
-                $('#editPanelBook').fadeOut();
-                loadBookData();
-            },
-            error: function(err){
-                alert("Error occurred while editing product data");
-            }
-        });
-    });
-
-    $('#editUserForm').on('submit', function(e){
-        e.preventDefault();
-        var datas = $(this).serializeArray();
-        var data_array = {};
-        $.map(datas, function(data){
-            data_array[data['name']] = data['value'];
+            $.ajax({
+                url: 'db/admin_request.php',
+                method: 'POST',
+                data: {
+                    'add_book': true,
+                    ...data_array,
+                },
+                success: (result) => {
+                    $('#addBookForm')[0].reset();
+                    $('#addPanelBook').fadeOut();
+                    self.loadBookData();
+                },
+                error: function(err){
+                    alert("Error occurred while adding product data");
+                }
+            });
         });
 
-        $.ajax({
-            url: 'db/admin_request.php',
-            method: 'POST',
-            data: {
-                'update_user': true,
-                ...data_array,
-            },
-            success: function(result){
-                $('#editUserForm')[0].reset();
-                $('#editPanelUser').fadeOut();
-                loadUserData();
-            },
-            error: function(err){
-                alert("Error occured while editing user data");
-            }
-        })
-    })
+        $('#addUserForm').on('submit', function(e){
+            e.preventDefault();
+            var datas = $(this).serializeArray();
+            var data_array = {};
 
-    $('#deleteBookForm').on('submit', function(e){
-        e.preventDefault();
-        var datas = $(this).serializeArray();
-        var data_array = {};
-        $.map(datas, function(data){
-            data_array[data['name']] = data['value'];
-        });
+            $.map(datas, function(data){
+                data_array[data['name']] = data['value'];
+            })
 
-        $.ajax({
-            url: 'db/admin_request.php',
-            method: 'POST',
-            data: {
-                'delete_book': true,
-                ...data_array,
-            },
-            success: function(result){
-                $('#deleteBookForm')[0].reset();
-                $('#deletePanelBook').fadeOut();
-                loadBookData();
-                loadBookNames();
+            if(datas.user_password !== datas.conf_user_password){
+                alert("Your passwords do not match!");
+            } else {
+                $.ajax({
+                    url: 'db/admin_request.php',
+                    method: 'POST',
+                    data: {
+                        'add_user': true,
+                        ...data_array,
+                    },
+                    success: (result) => {
+                        $('#addUserForm')[0].reset();
+                        $('#addPanelUser').fadeOut();
+                        self.loadUserData();
+                    }
+                })
             }
         })
-    })
-    
-    $('#deleteUserForm').on('submit', function(e){
-        e.preventDefault();
-        var datas = $(this).serializeArray();
-        var data_array = {};
-        $.map(datas, function(data){
-            data_array[data['name']] = data['value'];
+
+        $('#editBookForm').on('submit', function(e){
+            e.preventDefault();
+            var datas = $(this).serializeArray();
+            var data_array = {};
+            $.map(datas, function(data){
+                data_array[data['name']]=data['value'];
+            });
+
+            $.ajax({
+                url: 'db/admin_request.php',
+                method: 'POST',
+                data: {
+                    'update_book':true,
+                    ...data_array,
+                },
+                success: (result) => {
+                    $('#editBookForm')[0].reset();
+                    $('#editPanelBook').fadeOut();
+                    self.loadBookData();
+                },
+                error: function(err){
+                    alert("Error occurred while editing product data");
+                }
+            });
         });
 
-        $.ajax({
-            url: 'db/admin_request.php',
-            method: 'POST',
-            data: {
-                'delete_user': true,
-                ...data_array,
-            },
-            success: function(result){
-                $('#deleteUserForm')[0].reset();
-                $('deletePanelUser').fadeOut();
-                loadUserData();
-            },
-            error: function(err){
-                alert("Error occured while deleting user data");
+        $('#editUserForm').on('submit', function(e){
+            e.preventDefault();
+            var datas = $(this).serializeArray();
+            var data_array = {};
+            $.map(datas, function(data){
+                data_array[data['name']] = data['value'];
+            });
+
+            $.ajax({
+                url: 'db/admin_request.php',
+                method: 'POST',
+                data: {
+                    'update_user': true,
+                    ...data_array,
+                },
+                success: (result) => {
+                    $('#editUserForm')[0].reset();
+                    $('#editPanelUser').fadeOut();
+                    self.loadUserData();
+                },
+                error: function(err){
+                    alert("Error occured while editing user data");
+                }
+            })
+        })
+
+        $('#deleteBookForm').on('submit', function(e){
+            e.preventDefault();
+            var datas = $(this).serializeArray();
+            var data_array = {};
+            $.map(datas, function(data){
+                data_array[data['name']] = data['value'];
+            });
+
+            $.ajax({
+                url: 'db/admin_request.php',
+                method: 'POST',
+                data: {
+                    'delete_book': true,
+                    ...data_array,
+                },
+                success: (result) => {
+                    $('#deleteBookForm')[0].reset();
+                    $('#deletePanelBook').fadeOut();
+                    self.loadBookData();
+                    self.loadBookNames();
+                }
+            })
+        })
+        
+        $('#deleteUserForm').on('submit', function(e){
+            e.preventDefault();
+            var datas = $(this).serializeArray();
+            var data_array = {};
+            $.map(datas, function(data){
+                data_array[data['name']] = data['value'];
+            });
+
+            $.ajax({
+                url: 'db/admin_request.php',
+                method: 'POST',
+                data: {
+                    'delete_user': true,
+                    ...data_array,
+                },
+                success: (result) => {
+                    $('#deleteUserForm')[0].reset();
+                    $('deletePanelUser').fadeOut();
+                    self.loadUserData();
+                },
+                error: function(err){
+                    alert("Error occured while deleting user data");
+                }
+            })
+        })
+
+        //Event Listener for Search
+        $('#search-bar').on('keyup', () => {
+            this.loadBookData();
+        });
+
+        $('#genre-select').on('change', () => {
+            this.loadBookData();
+        });
+
+        $('#search-bar-bookselect').on('keyup', () => {
+            this.loadBookNames();
+        });
+
+        $('#book-select').on('change', () => {
+            this.loadOrderData();
+        })
+
+        $(document).on('click', '#add-btn-book', () => {
+            $('#addPanelBook').fadeIn();
+        })
+
+        $(document).on('click', '#add-btn-user', () => {
+            $('#addPanelUser').fadeIn();
+        })
+
+        $(document).on('click', '.edit-btn-book', function(){
+            let id = $(this).data('id');
+            let name = $(this).data('name');
+            let price = $(this).data('price');
+            let genre = $(this).data('genre');
+            let author = $(this).data('author');
+            let stock = $(this).data('stock');
+            let sold = $(this).data('sold');
+
+            $('#edit_book_id').val(id);
+            $('#edit_book_name').val(name);
+            $('#edit_book_price').val(price);
+            $('#edit_book_genre').val(genre);
+            $('#edit_book_author').val(author);
+            $('#edit_book_stock').val(stock);
+            $('#edit_book_sold').val(sold);
+
+            $('#editPanelBook').fadeIn();
+        });
+
+        $(document).on('click', '.edit-btn-user', function(){
+            let id = $(this).data('id');
+            let name = $(this).data('name');
+            let role = $(this).data('role');
+            let email = $(this).data('email');
+
+            $('#edit_user_id').val(id);
+            $('#edit_user_name').val(name);
+            $('#edit_user_role').val(role);
+            $('#edit_user_email').val(email);
+
+            $('#editPanelUser').fadeIn();
+        });
+
+        $(document).on('click', '.delete-btn-user', function(){
+            let id = $(this).data('id');
+            let name = $(this).data('name');
+
+            $('#delete_user_id').val(id);
+
+            var confText = `Are you sure you would like to delete user ${name}?`
+            $('#delete-confirmationuser-text').html(confText);
+            $('#deletePanelUser').fadeIn();
+        });
+
+        $(document).on('click', '.delete-btn-book', function(){
+            let id = $(this).data('id');
+            let name = $(this).data('name');
+
+            $('#delete_book_id').val(id);
+
+            var confText = `Are you sure you would like to delete book ${name}?`
+            $('#delete-confirmationbook-text').html(confText);
+            $('#deletePanelBook').fadeIn();
+        })
+
+            $('#closeAddBookPanelBtn').on('click', function(){
+            $('#addPanelBook').fadeOut();
+        })
+
+            $('#closeAddUserPanelBtn').on('click', function(){
+            $('#addPanelUser').fadeOut();
+        })
+
+            $('#closeBookPanelBtn').on('click', function(){
+            $('#editPanelBook').fadeOut();
+        });
+
+            $('#closeUserPanelBtn').on('click', function(){
+            $('#editPanelUser').fadeOut();
+        });
+
+            $('#closeDeleteBookPanelBtn').on('click', function(){
+            $('#deletePanelBook').fadeOut();
+        })
+
+            $('#closeDeleteUserPanelBtn').on('click', function(){
+            $('#deletePanelUser').fadeOut();
+        });
+                
+
+        $('.panel-overlay').on('click', function(e) {
+            if(e.target === this){
+                $(this).fadeOut();
             }
         })
-    })
+    }
 
-    //Event Listener for Search
-    $('#search-bar').on('keyup', function() {
-        loadBookData();
-    });
-
-    $('#genre-select').on('change', function(){
-        loadBookData();
-    });
-
-    $('#search-bar-bookselect').on('keyup', function(){
-        loadBookNames();
-    });
-
-    $('#book-select').on('change', function(){
-        loadOrderData();
-    })
-
-    $(document).on('click', '#add-btn-book', function(){
-        $('#addPanelBook').fadeIn();
-    })
-
-    $(document).on('click', '#add-btn-user', function(){
-        $('#addPanelUser').fadeIn();
-    })
-
-    $(document).on('click', '.edit-btn-book', function(){
-        let id = $(this).data('id');
-        let name = $(this).data('name');
-        let price = $(this).data('price');
-        let genre = $(this).data('genre');
-        let author = $(this).data('author');
-        let stock = $(this).data('stock');
-        let sold = $(this).data('sold');
-
-        $('#edit_book_id').val(id);
-        $('#edit_book_name').val(name);
-        $('#edit_book_price').val(price);
-        $('#edit_book_genre').val(genre);
-        $('#edit_book_author').val(author);
-        $('#edit_book_stock').val(stock);
-        $('#edit_book_sold').val(sold);
-
-        $('#editPanelBook').fadeIn();
-    });
-
-    $(document).on('click', '.edit-btn-user', function(){
-        let id = $(this).data('id');
-        let name = $(this).data('name');
-        let role = $(this).data('role');
-        let email = $(this).data('email');
-
-        $('#edit_user_id').val(id);
-        $('#edit_user_name').val(name);
-        $('#edit_user_role').val(role);
-        $('#edit_user_email').val(email);
-
-        $('#editPanelUser').fadeIn();
-    });
-
-    $(document).on('click', '.delete-btn-user', function(){
-        let id = $(this).data('id');
-        let name = $(this).data('name');
-
-        $('#delete_user_id').val(id);
-
-        var confText = `Are you sure you would like to delete user ${name}?`
-        $('#delete-confirmationuser-text').html(confText);
-        $('#deletePanelUser').fadeIn();
-    });
-
-    $(document).on('click', '.delete-btn-book', function(){
-        let id = $(this).data('id');
-        let name = $(this).data('name');
-
-        $('#delete_book_id').val(id);
-
-        var confText = `Are you sure you would like to delete book ${name}?`
-        $('#delete-confirmationbook-text').html(confText);
-        $('#deletePanelBook').fadeIn();
-    })
-
-        $('#closeAddBookPanelBtn').on('click', function(){
-        $('#addPanelBook').fadeOut();
-    })
-
-        $('#closeAddUserPanelBtn').on('click', function(){
-        $('#addPanelUser').fadeOut();
-    })
-
-        $('#closeBookPanelBtn').on('click', function(){
-        $('#editPanelBook').fadeOut();
-    });
-
-        $('#closeUserPanelBtn').on('click', function(){
-        $('#editPanelUser').fadeOut();
-    });
-
-        $('#closeDeleteBookPanelBtn').on('click', function(){
-        $('#deletePanelBook').fadeOut();
-    })
-
-        $('#closeDeleteUserPanelBtn').on('click', function(){
-        $('#deletePanelUser').fadeOut();
-    });
-            
-
-    $('.panel-overlay').on('click', function(e) {
-        if(e.target === this){
-            $(this).fadeOut();
-        }
-    })
-});
 
 //Function code for loading book data
-function loadBookData() {
-
+    loadBookData() {
         let searchText = $('#search-bar').val();
         let selectedGenre = $('#genre-select').val();
 
@@ -328,123 +337,128 @@ function loadBookData() {
     }
 
     //Code for loading book genres 
-function loadBookGenres(){
-    $.ajax({
-        url: 'db/admin_request.php',
-        method: 'POST',
-        data: { 'fetch_genres': true },
-        success: function(result){
-            var selectOptions = `<option value = ""> All </option>`;
-            var datas = JSON.parse(result);
+    loadBookGenres(){
+        $.ajax({
+            url: 'db/admin_request.php',
+            method: 'POST',
+            data: { 'fetch_genres': true },
+            success: function(result){
+                var selectOptions = `<option value = ""> All </option>`;
+                var datas = JSON.parse(result);
 
-            datas.forEach(function(data){
-                selectOptions += `<option value = "${data.book_genre}"> ${data.book_genre}</option>`
-            });
-            $('#genre-select').html(selectOptions);
-        },
-        error: function(err){
-            alert("Error occured while fetching genre data.");
-        }
-    });
-}
+                datas.forEach(function(data){
+                    selectOptions += `<option value = "${data.book_genre}"> ${data.book_genre}</option>`
+                });
+                $('#genre-select').html(selectOptions);
+            },
+            error: function(err){
+                alert("Error occured while fetching genre data.");
+            }
+        });
+    }
 
     //Code for loading book names
-function loadBookNames(){
-    let searchText = $('#search-bar-bookselect').val();
+    loadBookNames(){
+        let searchText = $('#search-bar-bookselect').val();
 
-    $.ajax({
-        url: 'db/admin_request.php',
-        method: 'POST',
-        data: {'fetch_book_names': true,
-               'search_book_query': searchText},
-        success: function(result){
-            var selectOptions = `<option value = ""> None </option>`;
-            var datas = JSON.parse(result);
+        $.ajax({
+            url: 'db/admin_request.php',
+            method: 'POST',
+            data: {'fetch_book_names': true,
+                'search_book_query': searchText},
+            success: function(result){
+                var selectOptions = `<option value = ""> None </option>`;
+                var datas = JSON.parse(result);
 
-            datas.forEach(function(data){
-                selectOptions += `<option value = "${data.book_id}"> ${data.book_name} ID: ${data.book_id}</option>`
-            });
-            $('#book-select').html(selectOptions);
-        },
-        error: function(err){
-            alert("Error occured while fetching genre data.");
-        }
-    });
-}
+                datas.forEach(function(data){
+                    selectOptions += `<option value = "${data.book_id}"> ${data.book_name} ID: ${data.book_id}</option>`
+                });
+                $('#book-select').html(selectOptions);
+            },
+            error: function(err){
+                alert("Error occured while fetching genre data.");
+            }
+        });
+    }
 
     //Code for loading all user data
-function loadUserData(){
-    $.ajax({
-        url: 'db/admin_request.php',
-        method: 'POST',
-        data: {'fetch_users': true},
-        success: function(result){
-            var tBody = ``;
-            var datas = JSON.parse(result);
+    loadUserData(){
+        $.ajax({
+            url: 'db/admin_request.php',
+            method: 'POST',
+            data: {'fetch_users': true},
+            success: function(result){
+                var tBody = ``;
+                var datas = JSON.parse(result);
 
-            datas.forEach(function(data){
-                tBody += `<tr>`;
-                    tBody += `<td>${data.user_id}</td>`
-                    tBody += `<td>${data.user_name}</td>`
-                    tBody += `<td>${data.user_role}</td>`
-                    tBody += `<td>${data.user_email}</td>`
-                    tBody += `<td> <button class = "edit-btn-user"
-                                           data-id = "${data.user_id}"
-                                           data-name = "${data.user_name}"
-                                           data-role = "${data.user_role}"
-                                           data-email = "${data.user_email}">
-                                           Edit
-                                           </button> 
-                              </td>`
-                    tBody += `<td> <button class = "delete-btn-user"
-                                    data-id = "${data.user_id}"
-                                    data-name = "${data.user_name}"
-                                    >
-                                    Delete
-                                    </button> </td>`
-                tBody += `</tr>`;
-            });
-            $('#tBodyUsers').html(tBody);
-        },
-        error: function(err){
-            alert("Error occured while fetching user data.");
-        }
-    });
+                datas.forEach(function(data){
+                    tBody += `<tr>`;
+                        tBody += `<td>${data.user_id}</td>`
+                        tBody += `<td>${data.user_name}</td>`
+                        tBody += `<td>${data.user_role}</td>`
+                        tBody += `<td>${data.user_email}</td>`
+                        tBody += `<td> <button class = "edit-btn-user"
+                                            data-id = "${data.user_id}"
+                                            data-name = "${data.user_name}"
+                                            data-role = "${data.user_role}"
+                                            data-email = "${data.user_email}">
+                                            Edit
+                                            </button> 
+                                </td>`
+                        tBody += `<td> <button class = "delete-btn-user"
+                                        data-id = "${data.user_id}"
+                                        data-name = "${data.user_name}"
+                                        >
+                                        Delete
+                                        </button> </td>`
+                    tBody += `</tr>`;
+                });
+                $('#tBodyUsers').html(tBody);
+            },
+            error: function(err){
+                alert("Error occured while fetching user data.");
+            }
+        });
+    }
+
+    loadOrderData(){
+        let selectedBook = $('#book-select').val();
+
+        $.ajax({
+            url: 'db/admin_request.php',
+            method: 'POST',
+            data: {'fetch_orders': true,
+                'selected_book': selectedBook
+            },
+            success: function(result){
+                var tBody = ``;
+                var bookStat = ``;
+                var datas = JSON.parse(result);
+                var total_price = 0;
+                var total_orders = 0;
+
+                datas.forEach(function(data){
+                    tBody += `<tr>`;
+                        tBody += `<td> ${data.order_id} </td>`
+                        tBody += `<td> ${data.user_id} </td>`
+                        tBody += `<td> ${data.user_name} </td>`
+                        tBody += `<td> ${data.order_date} </td>`
+                    tBody += `</tr>`
+                    
+                    total_price += parseFloat(data.book_price);
+                    total_orders++;
+                });
+                $('#tBodyOrders').html(tBody);
+
+                bookStat += `<p> Total Orders: ${total_orders} </p>
+                            <p> Total Price: ${total_price} </p>`
+            
+                $('#book-order-statistics').html(bookStat);
+            }
+        })
+    }
 }
 
-function loadOrderData(){
-    let selectedBook = $('#book-select').val();
-
-    $.ajax({
-        url: 'db/admin_admin_request.php',
-        method: 'POST',
-        data: {'fetch_orders': true,
-               'selected_book': selectedBook
-        },
-        success: function(result){
-            var tBody = ``;
-            var bookStat = ``;
-            var datas = JSON.parse(result);
-            var total_price = 0;
-            var total_orders = 0;
-
-            datas.forEach(function(data){
-                tBody += `<tr>`;
-                    tBody += `<td> ${data.order_id} </td>`
-                    tBody += `<td> ${data.user_id} </td>`
-                    tBody += `<td> ${data.user_name} </td>`
-                    tBody += `<td> ${data.order_date} </td>`
-                tBody += `</tr>`
-                
-                total_price += parseFloat(data.book_price);
-                total_orders++;
-            });
-            $('#tBodyOrders').html(tBody);
-
-            bookStat += `<p> Total Orders: ${total_orders} </p>
-                        <p> Total Price: ${total_price} </p>`
-        
-            $('#book-order-statistics').html(bookStat);
-        }
-    })
-}
+$(document).ready(() => {
+    window.adminPanel = new AdminPanel();
+});
