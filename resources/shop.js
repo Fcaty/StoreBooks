@@ -2,14 +2,18 @@ $(document).ready(function () {
     loadShopBooks();
     loadShopGenres();
 
+    // Re-fetch the (filtered) book list on every keystroke in the search box
     $('#search-bar').on('keyup', function () {
         loadShopBooks();
     });
 
+    // Re-fetch the (filtered) book list whenever the genre dropdown changes
     $('#genre-select').on('change', function () {
         loadShopBooks();
     });
 
+    // Delegated handler: works for Buy buttons even though rows are
+    // re-rendered by loadShopBooks() after every search/filter
     $('#tBodyShop').on('click', '.buy-btn', function () {
         var btn = $(this);
         var bookId = btn.data('book-id');
@@ -22,6 +26,8 @@ $(document).ready(function () {
                 var data = JSON.parse(result);
 
                 if (data.success) {
+                    // Update just this row's stock/sold cells and button state,
+                    // no need to re-fetch the whole list
                     $('#stock-' + bookId).text(data.book_stock);
                     $('#sold-' + bookId).text(data.book_sold);
 
