@@ -39,8 +39,7 @@
                 die("Error while inserting data! <br>" . $e);
             }
         }
-        //INSERT INTO table columns VALUES (?)
-        //UPDATE table SET col 1 = ?, col 2 = ? WHERE id = ?
+
         public function update ($table, $data, $where){
             try{
                 $update=$types="";
@@ -148,36 +147,6 @@
                 die("Error requesting data! <br> " . $e);
             }
         }
-
-        // public function update ($table, $data, $where) {
-        //     try {
-        //         $set=$types="";
-        //         $values = [];
-
-        //         foreach($data as $key => $value){
-        //             $set .= "$key = ?, ";
-        //             $types .= substr(gettype($value), 0, 1);
-        //             $values[] = $value;
-        //         }
-        //         $set = substr($set, 0, -2);
-
-        //         $cond="";
-        //         foreach($where as $key => $value){
-        //             $cond .= "$key = ? AND ";
-        //             $types .= substr(gettype($value), 0, 1);
-        //             $values[] = $value;
-        //         }
-        //         $cond = substr($cond, 0, -5);
-
-        //         $stmt = $this->conn->prepare("UPDATE $table SET $set WHERE $cond");
-        //         $stmt -> bind_param($types , ...$values);
-        //         $stmt -> execute();
-        //         $stmt -> close();
-
-        //     } catch (Exception $e) {
-        //         die("Error while updating data! <br>" . $e);
-        //     }
-        // }
     }
 
 ?>
